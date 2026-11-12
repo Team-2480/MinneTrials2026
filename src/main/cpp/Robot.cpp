@@ -8,6 +8,8 @@
 #include <ctre/phoenix6/core/CoreTalonFX.hpp>
 #include <ctre/phoenix6/signals/SpnEnums.hpp>
 #include <frc/Joystick.h>
+#include <wpi/print.h>
+#include <frc/XboxController.h>
 #include <frc/TimedRobot.h>
 #include <frc/drive/DifferentialDrive.h>
 #include <frc/motorcontrol/MotorController.h>
@@ -19,7 +21,7 @@ using namespace ctre::phoenix6::configs;
 
 class Robot : public frc::TimedRobot
 {
-  ctre::phoenix6::hardware::TalonFX m_leftLeader{0};
+  ctre::phoenix6::hardware::TalonFX m_leftLeader{1};
   ctre::phoenix6::hardware::TalonFX m_leftFollower{2};
   ctre::phoenix6::hardware::TalonFX m_rightLeader{3};
   ctre::phoenix6::hardware::TalonFX m_rightFollower{4};
@@ -29,15 +31,42 @@ class Robot : public frc::TimedRobot
       { m_leftLeader.Set(output); },
       [&](double output)
       { m_rightLeader.Set(output); }};
+
   frc::Joystick m_driverJoystick{0};
+  frc::XboxController m_driverController{1};
 
 public:
   // We need to invert one side of the drivetrain so that positive voltages
   // result in both sides moving forward. Depending on how your robot's
   // gearbox is constructed, you might have to invert the left side instead.
 
+  int ticks = 0;
   void TeleopPeriodic() override
   {
+    ticks++;
+
+    if (m_driverController.GetXButtonPressed()) {
+      wpi::print("x is pressed\n");
+    }
+
+    // out in
+    
+    //
+    // code here
+    //
+    
+    // up down
+    
+    //
+    // code here
+    //
+  
+    // print "hello world\n" at 300 ticks
+    
+    //
+    // code here
+    //
+
     double rotation = m_driverJoystick.GetY();
     double forward = m_driverJoystick.GetZ();
 
@@ -52,7 +81,6 @@ private:
   {
 
     // Create a configuration object
-    TalonFXConfiguration cfg;
     TalonFXConfiguration cfg;
 
     // Talon configuration options can be found in the CTRE Phoenix6
