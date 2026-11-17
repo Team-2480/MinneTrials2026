@@ -25,6 +25,7 @@ class Robot : public frc::TimedRobot
   ctre::phoenix6::hardware::TalonFX m_leftFollower{2};
   ctre::phoenix6::hardware::TalonFX m_rightLeader{3};
   ctre::phoenix6::hardware::TalonFX m_rightFollower{4};
+  ctre::phoenix::motorcontrol::can::WPI_TalonSRX m_elevator{5};
 
   frc::DifferentialDrive m_robotDrive{
       [&](double output)
@@ -34,6 +35,9 @@ class Robot : public frc::TimedRobot
 
   frc::Joystick m_driverJoystick{0};
   frc::XboxController m_driverController{1};
+  int motorTicks = 0;
+  bool motorUp = false;
+  bool motorDown = false;
 
 public:
   // We need to invert one side of the drivetrain so that positive voltages
@@ -45,24 +49,91 @@ public:
   {
     ticks++;
 
-    if (m_driverController.GetXButtonPressed()) {
+    if (m_driverController.GetXButtonPressed())
+    {
       wpi::print("x is pressed\n");
     }
 
     // out in
-    
+
     //
     // code here
     //
-    
+
     // up down
+    if (m_driverController.GetYButtonPressed())
+    {
+      if (motorUp == false && motorDown == false)
+      {
+        wpi::print("motor spin up\n");
+        motorUp = true;
+      }
+    }
+    if (motorUp == true)
+    {
+      motorTicks++;
+      // add code to make the motor actually go up
+      if (motorTicks == 250)
+      {
+        wpi::print("motor stop\n");
+        motorUp = false;
+        motorTicks = 0;
+        // add code to make motor stop
+      }
+    }
+    if (m_driverController.GetAButton())
+    {
+      if (motorUp == false && motorDown == false)
+      {
+        wpi::print("motor spin down\n");
+        motorDown = true;
+      }
+    }
+    if (motorDown == true)
+    {
+      motorTicks++;
+      if (motorTicks == 250)
+      {
+        wpi::print("motor stop\n");
+        motorTicks = 0;
+        motorDown = false;
+      }
+    }
+
+    //left trigger stuff
     
+    if (m_driverController.GetLeftTriggerAxis() <= 0.4999 && m_driverController.GetLeftTriggerAxis() >= 0.0001){
+      wpi::print("left trigger less than half pressed\n");
+    }
+    if (m_driverController.GetLeftTriggerAxis() >= 0.5 && m_driverController.GetLeftTriggerAxis() <= 0.999)
+    {
+      wpi::print("left trigger over half pressed\n");
+    }
+    if (m_driverController.GetLeftTriggerAxis() == 1)
+    {
+      wpi::print("left trigger fully pressed\n");
+    }
+
+    //right trigger stuff
+    
+    if (m_driverController.GetRightTriggerAxis() <= 0.4999 && m_driverController.GetRightTriggerAxis() >= 0.0001){
+      wpi::print("right trigger less than half pressed\n");
+    }
+    if (m_driverController.GetRightTriggerAxis() >= 0.5 && m_driverController.GetRightTriggerAxis() <= 0.999)
+    {
+      wpi::print("right trigger over half pressed\n");
+    }
+    if (m_driverController.GetRightTriggerAxis() == 1)
+    {
+      wpi::print("right trigger fully pressed\n");
+    }
+
     //
     // code here
     //
-  
+
     // print "hello world\n" at 300 ticks
-    
+
     //
     // code here
     //
