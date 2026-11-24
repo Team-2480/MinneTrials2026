@@ -73,12 +73,14 @@ public:
     {
       motorTicks++;
       // add code to make the motor actually go up
+      m_elevator.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0.25);
       if (motorTicks == 250)
       {
         wpi::print("motor stop\n");
         motorUp = false;
         motorTicks = 0;
         // add code to make motor stop
+        m_elevator.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0);
       }
     }
     if (m_driverController.GetAButton())
@@ -87,6 +89,7 @@ public:
       {
         wpi::print("motor spin down\n");
         motorDown = true;
+        m_elevator.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, -0.25);
       }
     }
     if (motorDown == true)
@@ -97,6 +100,7 @@ public:
         wpi::print("motor stop\n");
         motorTicks = 0;
         motorDown = false;
+        m_elevator.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0);
       }
     }
 
