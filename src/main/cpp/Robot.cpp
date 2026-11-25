@@ -26,6 +26,7 @@ class Robot : public frc::TimedRobot
   ctre::phoenix6::hardware::TalonFX m_rightLeader{3};
   ctre::phoenix6::hardware::TalonFX m_rightFollower{4};
   ctre::phoenix::motorcontrol::can::WPI_TalonSRX m_elevator{5};
+  ctre::phoenix::motorcontrol::can::WPI_TalonSRX m_intake{6};
 
   frc::DifferentialDrive m_robotDrive{
       [&](double output)
@@ -108,28 +109,34 @@ public:
     
     if (m_driverController.GetLeftTriggerAxis() <= 0.4999 && m_driverController.GetLeftTriggerAxis() >= 0.0001){
       wpi::print("left trigger less than half pressed\n");
+      m_intake.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0);
     }
     if (m_driverController.GetLeftTriggerAxis() >= 0.5 && m_driverController.GetLeftTriggerAxis() <= 0.999)
     {
       wpi::print("left trigger over half pressed\n");
+      m_intake.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0.25);
     }
     if (m_driverController.GetLeftTriggerAxis() == 1)
     {
       wpi::print("left trigger fully pressed\n");
+      m_intake.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0.25);
     }
 
     //right trigger stuff
     
     if (m_driverController.GetRightTriggerAxis() <= 0.4999 && m_driverController.GetRightTriggerAxis() >= 0.0001){
       wpi::print("right trigger less than half pressed\n");
+      m_intake.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0);
     }
     if (m_driverController.GetRightTriggerAxis() >= 0.5 && m_driverController.GetRightTriggerAxis() <= 0.999)
     {
       wpi::print("right trigger over half pressed\n");
+      m_intake.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, -0.25);
     }
     if (m_driverController.GetRightTriggerAxis() == 1)
     {
       wpi::print("right trigger fully pressed\n");
+      m_intake.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, -0.25);
     }
 
     //
