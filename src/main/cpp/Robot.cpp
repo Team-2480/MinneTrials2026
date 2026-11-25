@@ -152,7 +152,13 @@ public:
     double rotation = m_driverJoystick.GetY();
     double forward = m_driverJoystick.GetZ();
 
-    m_robotDrive.ArcadeDrive(forward, rotation);
+     if (m_driverJoystick.GetTrigger() == true)
+    {
+      forward /= 2;
+      rotation /= 2;
+    }
+
+    m_robotDrive.ArcadeDrive(forward/3, rotation/3);
   }
 
 private:
